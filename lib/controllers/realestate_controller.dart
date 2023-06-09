@@ -16,6 +16,9 @@ abstract class _RealEstateBase with Store {
   final Remote remote2 = Remote.customContentType({}, contentType: "application/x-www-form-urlencoded");
 
   @observable
+  bool isScrollLoading = false;
+
+  @observable
   ObservableList<RealEstateModel> realEstates = ObservableList<RealEstateModel>();
 
   @observable
@@ -26,36 +29,41 @@ abstract class _RealEstateBase with Store {
 
   @action
   Future<void> getRealEstates(int page, BuildContext context) async {
-    var response = await remote.request(
-      method: "Get",
-      path: "/realestate",
-      queryParameters: {
-        "skip": page*10,
-        "take": 10
-      }
-    );
+    if(!isScrollLoading){
+      isScrollLoading = true;
+      pageNumber = page;
+      var response = await remote.request(
+        method: "Get",
+        path: "/realestate",
+        queryParameters: {
+          "skip": page*10,
+          "take": 10
+        }
+      );
 
-    if( response != null ){
-      if( response['status_code'] == 200 ){
-        // log( ( response['body']['results'] as List ) .toString());
+      if( response != null ){
+        if( response['status_code'] == 200 ){
+          // log( ( response['body']['results'] as List ) .toString());
 
-        List results = response['body']['results'] as List ;
+          List results = response['body']['results'] as List ;
 
-        results.forEach((realEstate) {
-          realEstates.add(RealEstateModel.fromJson(realEstate));
-        });
+          results.forEach((realEstate) {
+            realEstates.add(RealEstateModel.fromJson(realEstate));
+          });
 
-      }else{
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.red,
-          content: CustomText.createCustomTajawalText(
-            text: "Something went wrong !",
-            color: Colors.white,
-            fontSize: 16,
-          )
-        ));
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.red,
+            content: CustomText.createCustomTajawalText(
+              text: "Something went wrong !",
+              color: Colors.white,
+              fontSize: 16,
+            )
+          ));
+        }
       }
     }
+    isScrollLoading = false;
   }
 
   @action

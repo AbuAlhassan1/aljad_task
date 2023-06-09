@@ -2,15 +2,12 @@ import 'package:dio/dio.dart';
 
 class Remote {
   Map<String, String> headers;
-
   static String baseUrl = "https://api.ibaity.com/v1";
-
   final http = Dio();
 
   Remote(this.headers){
     http.options = BaseOptions(
       baseUrl: baseUrl,
-      connectTimeout: const Duration(seconds: 10),
       contentType: "application/json",
       headers: headers,
     );
@@ -23,7 +20,6 @@ class Remote {
   Remote.customContentType(this.headers, {required String contentType}){
     http.options = BaseOptions(
       baseUrl: baseUrl,
-      connectTimeout: const Duration(seconds: 10),
       contentType: contentType,
       headers: headers,
     );
@@ -36,8 +32,6 @@ class Remote {
       queryParameters: queryParameters,
       data: payload
     );
-
-    // log(res.data.toString());
 
     return {
       'status_code': res.statusCode,

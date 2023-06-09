@@ -1,8 +1,10 @@
+import 'dart:developer';
 import 'package:aljad_task/controllers/realestate_controller.dart';
 import 'package:aljad_task/views/home/realestate_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pagination_flutter/pagination.dart';
 
 final RealEstate realEstateController = RealEstate();
@@ -16,16 +18,30 @@ class HomePageWrapper extends StatefulWidget {
 
 class _HomePageWrapperState extends State<HomePageWrapper> {
 
+  final ScrollController scrollController = ScrollController();
+  final PagingController pagingController = PagingController(firstPageKey: 1);
+
   @override
   void initState() {
     realEstateController.getRealEstates(1, context);
     realEstateController.getCount(context);
     super.initState();
+
+    scrollController.addListener(() {
+      if(scrollController.position.atEdge && scrollController.position.pixels != 0){
+        realEstateController.getRealEstates(realEstateController.pageNumber + 1, context);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          log(realEstateController.realEstates.length.toString());
+        },
+      ),
       drawer: Drawer(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -41,7 +57,7 @@ class _HomePageWrapperState extends State<HomePageWrapper> {
               onPressed: () async {
                 realEstateController.increaceCount(context);
               },
-              child: Text("Increace Count ++")
+              child: const Text("Increace Count ++")
             )
           ],
         ),
@@ -79,22 +95,32 @@ class _HomePageWrapperState extends State<HomePageWrapper> {
           ),
           // Header [ App Bar ] -- E n d --
 
+          // Main Content -- S t a r t --
           Expanded(
             child: Observer(
               builder: (context) => ListView.builder(
-                itemCount: realEstateController.realEstates.length,
+                controller: scrollController,
+                itemCount: realEstateController.realEstates.length + 1,
                 padding: EdgeInsets.symmetric(vertical: 10.h),
                 physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) => RealEstateCard(index: index)
+                itemBuilder: (context, index) => index == realEstateController.realEstates.length ? Observer(
+                  builder: (context) => SizedBox(
+                    child: realEstateController.isScrollLoading ? const Center(child: CircularProgressIndicator()) : null,
+                  ),
+                )
+                : RealEstateCard(index: index)
               ),
             )
           ),
+          // Main Content -- E n d --
+
+          // Pagination Widget -- S t a r t --
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 child: Pagination(
-                  numOfPages: 10,
+                  numOfPages: 100,
                   activeBtnStyle: const ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.zero)),
                   activeTextStyle: const TextStyle(),
                   inactiveBtnStyle: const ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.zero)),
@@ -109,6 +135,7 @@ class _HomePageWrapperState extends State<HomePageWrapper> {
               ),
             ],
           )
+          // Pagination Widget -- E n d --
         ],
       )
     );

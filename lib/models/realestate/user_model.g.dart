@@ -12,7 +12,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       secondname: json['secondname'] as String?,
       commNameEn: json['commNameEn'] as String?,
       commNameAr: json['commNameAr'] as String?,
-      phoneNumbers: json['phoneNumbers'] as String?,
+      phoneNumbers: json['phoneNumbers'],
       username: json['username'] as String?,
       role: json['role'] == null
           ? null

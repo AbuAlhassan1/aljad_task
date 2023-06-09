@@ -12,7 +12,7 @@ class UserModel with _$UserModel {
     required String? secondname,
     required String? commNameEn,
     required String? commNameAr,
-    required String? phoneNumbers,
+    required dynamic phoneNumbers,
     required String? username,
     required RoleModel? role,
   }) = _UserModel;

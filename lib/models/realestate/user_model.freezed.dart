@@ -25,7 +25,7 @@ mixin _$UserModel {
   String? get secondname => throw _privateConstructorUsedError;
   String? get commNameEn => throw _privateConstructorUsedError;
   String? get commNameAr => throw _privateConstructorUsedError;
-  String? get phoneNumbers => throw _privateConstructorUsedError;
+  dynamic get phoneNumbers => throw _privateConstructorUsedError;
   String? get username => throw _privateConstructorUsedError;
   RoleModel? get role => throw _privateConstructorUsedError;
 
@@ -46,7 +46,7 @@ abstract class $UserModelCopyWith<$Res> {
       String? secondname,
       String? commNameEn,
       String? commNameAr,
-      String? phoneNumbers,
+      dynamic phoneNumbers,
       String? username,
       RoleModel? role});
 
@@ -99,7 +99,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
       phoneNumbers: freezed == phoneNumbers
           ? _value.phoneNumbers
           : phoneNumbers // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as dynamic,
       username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -137,7 +137,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       String? secondname,
       String? commNameEn,
       String? commNameAr,
-      String? phoneNumbers,
+      dynamic phoneNumbers,
       String? username,
       RoleModel? role});
 
@@ -189,7 +189,7 @@ class __$$_UserModelCopyWithImpl<$Res>
       phoneNumbers: freezed == phoneNumbers
           ? _value.phoneNumbers
           : phoneNumbers // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as dynamic,
       username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -229,7 +229,7 @@ class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
   @override
   final String? commNameAr;
   @override
-  final String? phoneNumbers;
+  final dynamic phoneNumbers;
   @override
   final String? username;
   @override
@@ -269,8 +269,8 @@ class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
                 other.commNameEn == commNameEn) &&
             (identical(other.commNameAr, commNameAr) ||
                 other.commNameAr == commNameAr) &&
-            (identical(other.phoneNumbers, phoneNumbers) ||
-                other.phoneNumbers == phoneNumbers) &&
+            const DeepCollectionEquality()
+                .equals(other.phoneNumbers, phoneNumbers) &&
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.role, role) || other.role == role));
@@ -278,8 +278,16 @@ class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, firstname, secondname,
-      commNameEn, commNameAr, phoneNumbers, username, role);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      firstname,
+      secondname,
+      commNameEn,
+      commNameAr,
+      const DeepCollectionEquality().hash(phoneNumbers),
+      username,
+      role);
 
   @JsonKey(ignore: true)
   @override
@@ -302,7 +310,7 @@ abstract class _UserModel implements UserModel {
       required final String? secondname,
       required final String? commNameEn,
       required final String? commNameAr,
-      required final String? phoneNumbers,
+      required final dynamic phoneNumbers,
       required final String? username,
       required final RoleModel? role}) = _$_UserModel;
 
@@ -320,7 +328,7 @@ abstract class _UserModel implements UserModel {
   @override
   String? get commNameAr;
   @override
-  String? get phoneNumbers;
+  dynamic get phoneNumbers;
   @override
   String? get username;
   @override
