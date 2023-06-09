@@ -32,14 +32,27 @@ abstract class _RealEstateBase with Store {
     if(!isScrollLoading){
       isScrollLoading = true;
       pageNumber = page;
-      var response = await remote.request(
-        method: "Get",
-        path: "/realestate",
-        queryParameters: {
-          "skip": page*10,
-          "take": 10
-        }
-      );
+      Map<dynamic, dynamic>? response;
+      try{
+        response = await remote.request(
+          method: "Get",
+          path: "/realestate",
+          queryParameters: {
+            "skip": page*10,
+            "take": 10
+          }
+        );
+      }catch(error){
+        log(error.toString());
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: CustomText.createCustomTajawalText(
+            text: "Something went wrong !",
+            color: Colors.white,
+            fontSize: 16,
+          )
+        ));
+      }
 
       if( response != null ){
         if( response['status_code'] == 200 ){

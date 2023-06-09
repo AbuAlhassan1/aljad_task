@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:aljad_task/controllers/auth_controller.dart';
 import 'package:aljad_task/controllers/theme_provider.dart';
 import 'package:aljad_task/guard.dart';
 import 'package:aljad_task/translations/locale_keys.g.dart';
 import 'package:aljad_task/views/home/home_page_wapper.dart';
+import 'package:aljad_task/views/realestate/realestate_page_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,13 +58,18 @@ class MyApp extends StatelessWidget {
             onPass: (_) => const HomePageWrapper(),
           ),
         ),
-      ),
-      GoRoute(
-        path: '/welcome',
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const Home()
-        ),
+        routes: [
+          GoRoute(
+            path: 'realestate/:index',
+            pageBuilder: (context, state) {
+              state.params;
+              return MaterialPage(
+                key: state.pageKey,
+                child: const RealEstatePageWrapper()
+              );
+            },
+          ),
+        ]
       ),
     ],
     errorPageBuilder: (context, state) => MaterialPage(
@@ -75,7 +83,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.setLocale(const Locale('en'));
+    context.setLocale(const Locale('ar'));
     return ScreenUtilInit(
       designSize: const Size(400, 860),
       minTextAdapt: true,
@@ -87,56 +95,6 @@ class MyApp extends StatelessWidget {
         routerConfig: router,
         debugShowCheckedModeBanner: false,
       ),
-    );
-  }
-}
-
-class Home extends StatefulWidget {
-  const Home({super.key});
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TextButton(
-              onPressed: (){
-                context.setLocale(const Locale('ar', ''));
-              },
-              child: const Text('ar'),
-            ),
-            TextButton(
-              onPressed: (){
-                context.setLocale(const Locale('en', ''));
-              },
-              child: const Text('en'),
-            ),
-            const Text(
-              LocaleKeys.helloWorld
-            ).tr(),
-            TextButton(
-              onPressed: (){
-              },
-              child: const Text('Light'),
-            ),
-            TextButton(
-              onPressed: (){
-              },
-              child: const Text('Dark'),
-            ),
-          ],
-        ),
-      )
     );
   }
 }

@@ -8,6 +8,7 @@ class Remote {
   Remote(this.headers){
     http.options = BaseOptions(
       baseUrl: baseUrl,
+      connectTimeout: const Duration(seconds: 10),
       contentType: "application/json",
       headers: headers,
     );
@@ -20,6 +21,7 @@ class Remote {
   Remote.customContentType(this.headers, {required String contentType}){
     http.options = BaseOptions(
       baseUrl: baseUrl,
+      connectTimeout: const Duration(seconds: 10),
       contentType: contentType,
       headers: headers,
     );
