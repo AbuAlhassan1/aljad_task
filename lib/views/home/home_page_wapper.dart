@@ -37,11 +37,6 @@ class _HomePageWrapperState extends State<HomePageWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          log(realEstateController.realEstates.length.toString());
-        },
-      ),
       drawer: Drawer(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
