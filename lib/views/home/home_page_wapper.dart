@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:aljad_task/controllers/realestate_controller.dart';
 import 'package:aljad_task/views/home/realestate_card.dart';
 import 'package:flutter/material.dart';
@@ -48,11 +47,13 @@ class _HomePageWrapperState extends State<HomePageWrapper> {
               ),
             ),
 
-            TextButton(
-              onPressed: () async {
-                realEstateController.increaceCount(context);
-              },
-              child: const Text("Increace Count ++")
+            Observer(
+              builder: (context) => TextButton(
+                onPressed: () async {
+                  realEstateController.increaceCount(context);
+                },
+                child: realEstateController.isCountLoading ? const CircularProgressIndicator() : const Text("Increace Count ++")
+              ),
             )
           ],
         ),

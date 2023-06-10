@@ -25,6 +25,22 @@ mixin _$RealEstate on _RealEstateBase, Store {
     });
   }
 
+  late final _$isCountLoadingAtom =
+      Atom(name: '_RealEstateBase.isCountLoading', context: context);
+
+  @override
+  bool get isCountLoading {
+    _$isCountLoadingAtom.reportRead();
+    return super.isCountLoading;
+  }
+
+  @override
+  set isCountLoading(bool value) {
+    _$isCountLoadingAtom.reportWrite(value, super.isCountLoading, () {
+      super.isCountLoading = value;
+    });
+  }
+
   late final _$realEstatesAtom =
       Atom(name: '_RealEstateBase.realEstates', context: context);
 
@@ -102,6 +118,7 @@ mixin _$RealEstate on _RealEstateBase, Store {
   String toString() {
     return '''
 isScrollLoading: ${isScrollLoading},
+isCountLoading: ${isCountLoading},
 realEstates: ${realEstates},
 pageNumber: ${pageNumber},
 count: ${count}

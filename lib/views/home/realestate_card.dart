@@ -61,11 +61,12 @@ class RealEstateCard extends StatelessWidget {
                       itemCount: realEstateController.realEstates[index].imagesCount,
                       itemBuilder: (context, i) => CachedNetworkImage(
                         imageUrl: realEstateController.realEstates[index].image.toString(),
+                        placeholder: (context, url) => const Center(child: CircularProgressIndicator(color: Colors.white)),
                         errorWidget: (context, url, error) => Center(
                           child: CustomText.createCustomTajawalText(
                             overflow: TextOverflow.ellipsis,
                             text: "No Image",
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 18
                           ),
                         ),

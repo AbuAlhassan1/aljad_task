@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
               state.params;
               return MaterialPage(
                 key: state.pageKey,
-                child: const RealEstatePageWrapper()
+                child: RealEstatePageWrapper(index: int.parse(state.params['index']!))
               );
             },
           ),

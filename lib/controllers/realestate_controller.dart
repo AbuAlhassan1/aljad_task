@@ -19,6 +19,9 @@ abstract class _RealEstateBase with Store {
   bool isScrollLoading = false;
 
   @observable
+  bool isCountLoading = false;
+
+  @observable
   ObservableList<RealEstateModel> realEstates = ObservableList<RealEstateModel>();
 
   @observable
@@ -81,6 +84,7 @@ abstract class _RealEstateBase with Store {
 
   @action
   Future<void> getCount(BuildContext context) async {
+    isCountLoading = true;
     var response = await remote.request(
       method: "Get",
       path: "/config",
@@ -102,31 +106,36 @@ abstract class _RealEstateBase with Store {
         ));
       }
     }
+    isCountLoading = false;
   }
 
   @action
   Future<void> increaceCount(BuildContext context) async {
-    var response = await remote2.request(
-      method: "PATCH",
-      path: "/config/count",
-      payload: {
-        'count': count + 1
-      }
-    );
+    if(!isCountLoading){
+      isCountLoading = true;
+      var response = await remote2.request(
+        method: "PATCH",
+        path: "/config/count",
+        payload: {
+          'count': count + 1
+        }
+      );
 
-    if( response != null ){
-      if( response['status_code'] == 200 ){
-        count = response['body']['count'];
-      }else{
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.red,
-          content: CustomText.createCustomTajawalText(
-            text: "Something went wrong !",
-            color: Colors.white,
-            fontSize: 16,
-          )
-        ));
+      if( response != null ){
+        if( response['status_code'] == 200 ){
+          count = response['body']['count'];
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.red,
+            content: CustomText.createCustomTajawalText(
+              text: "Something went wrong !",
+              color: Colors.white,
+              fontSize: 16,
+            )
+          ));
+        }
       }
+      isCountLoading = false;
     }
   }
 }
